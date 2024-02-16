@@ -1,0 +1,10 @@
+*[Cc]onfig.json
+.git
+.github
+*/bin
+*/obj
+appsettings.[Dd]evelopment.json
+appsettings.[Ss]taging.json
+appsettings.[Pp]roduction.json
+appsettings.json
+NuGetPublish.sh
