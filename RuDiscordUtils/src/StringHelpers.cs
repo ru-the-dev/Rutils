@@ -6,7 +6,7 @@ public static class StringHelpers
 {
     public static string FloatToCurrencyString(float currencyAmount, string? prefix = "$", string? postfix = null, string specificCulture = "en-US")
     {
-        return $"{(prefix != null ? prefix : "")}{currencyAmount.ToString("#,0.00", CultureInfo.GetCultureInfo("en-US"))}{(postfix != null ? postfix : "")}";
+        return $"{(currencyAmount < 0f ? "-" : "")}{(prefix != null ? prefix : "")}{float.Abs(currencyAmount).ToString("#,0.00", CultureInfo.GetCultureInfo("en-US"))}{(postfix != null ? postfix : "")}";
     }
 
     public static string CreateTable<T>

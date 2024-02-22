@@ -5,7 +5,7 @@ using Discord.WebSocket;
 
 public static class EmbedFactory
 {
-    public static Color DefaultEmbedColor { get; set; } = new Color(0x73e677);
+    public static Color DefaultEmbedColor { get; set; } = new Color(0x00ce6c);
     public static bool HasDefaultTimestamp {get; set; } = true;
     public static bool HasDefaultFooter {get; set; } = true;
 
