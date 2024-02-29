@@ -6,7 +6,12 @@ public static class StringHelpers
 {
     public static string FloatToCurrencyString(float currencyAmount, string? prefix = "$", string? postfix = null, string specificCulture = "en-US")
     {
-        return $"{(currencyAmount < 0f ? "-" : "")}{(prefix != null ? prefix : "")}{float.Abs(currencyAmount).ToString("#,0.00", CultureInfo.GetCultureInfo("en-US"))}{(postfix != null ? postfix : "")}";
+        bool hasDecimals = Math.Abs(currencyAmount % 1) > (Double.Epsilon * 100);
+
+        var culture = CultureInfo.GetCultureInfo("en-US");
+
+        string currencyAmountString = hasDecimals ? float.Abs(currencyAmount).ToString("#,0.00", culture) : int.Abs((int)currencyAmount).ToString("#,0", culture);
+        return $"{(currencyAmount < 0f ? "-" : "")}{(prefix != null ? prefix : "")}{currencyAmountString}{(postfix != null ? postfix : "")}";
     }
 
     public static string CreateTable<T>
@@ -79,5 +84,15 @@ public static class StringHelpers
         
         //we have a finished string table
         return tableString;
+    }
+
+    public static string FirstCharToUpper(this string s)
+    {
+        if (string.IsNullOrEmpty(s))
+            throw new ArgumentException("There is no first letter");
+
+        char[] a = s.ToCharArray();
+        a[0] = char.ToUpper(a[0]);
+        return new string(a);
     }
 }
