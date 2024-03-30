@@ -1,7 +1,7 @@
-namespace RuDiscordUtils;
-
 using Discord;
 using Discord.WebSocket;
+
+namespace Rutils.Discord;
 
 public static class EmbedFactory
 {

@@ -1,6 +1,6 @@
 using Discord;
 
-namespace RuDiscordUtils;
+namespace Rutils.Discord;
 
 public static class CustomEmojis
 {

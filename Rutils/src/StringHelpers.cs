@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace RuDiscordUtils;
+namespace Rutils;
 
 public static class StringHelpers
 {

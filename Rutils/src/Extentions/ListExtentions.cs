@@ -1,4 +1,5 @@
-namespace rutils;
+
+namespace Rutils;
 
 public static class ListExtentions
 {

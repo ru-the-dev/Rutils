@@ -1,4 +1,4 @@
-namespace RuDiscordUtils;
+namespace Rutils;
 
 public static class Colors
 {

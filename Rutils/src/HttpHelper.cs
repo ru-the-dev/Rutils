@@ -1,7 +1,7 @@
 using System.Text;
 using Newtonsoft.Json;
 
-namespace RuDiscordUtils;
+namespace Rutils;
 
 public static class HttpHelper
 {

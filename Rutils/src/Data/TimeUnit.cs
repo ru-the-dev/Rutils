@@ -1,3 +1,5 @@
+namespace Rutils;
+
 public enum TimeUnit
 {
     Years,

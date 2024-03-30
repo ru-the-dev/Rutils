@@ -1,6 +1,9 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
+namespace Rutils;
+
+
 public class MicrosecondEpochConverter : EpochConverter
 {
     public MicrosecondEpochConverter() : base(TimeUnit.Microseconds) {}

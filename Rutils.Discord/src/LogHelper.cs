@@ -1,7 +1,7 @@
-namespace RuDiscordUtils;
-
 using Discord;
 using Microsoft.Extensions.Logging;
+
+namespace Rutils.Discord;
 
 public static class LogHelper
 {
