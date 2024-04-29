@@ -13,3 +13,20 @@ public enum TimeUnit
     Nanoseconds, 
     Microseconds
 }
+
+public struct TimeUnitCount
+{
+    public TimeUnit unit;
+    public double count;
+
+    public override string ToString()
+    {
+        return $"{Math.Abs(count)} {ToString(unit)}";
+    }  
+
+    public static string ToString(TimeUnit unit)
+    {
+        return Enum.GetName(unit)!.ToLower();
+    }
+
+}

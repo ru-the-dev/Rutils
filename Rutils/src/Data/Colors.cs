@@ -11,5 +11,7 @@ public static class Colors
         public static uint GridGray = 0xbdb9c1;
         public static uint BarCyan = 0x00cbff;
         public static uint FigureBackgroundGray = 0x0c0c0c;
+        public static uint NeonBlue = 0x11ffff;
+        public static uint NeonPurple = 0xff0088;
     }
 }
