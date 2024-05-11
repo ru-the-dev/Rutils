@@ -13,5 +13,8 @@ public static class Colors
         public static uint FigureBackgroundGray = 0x0c0c0c;
         public static uint NeonBlue = 0x11ffff;
         public static uint NeonPurple = 0xff0088;
+        public static uint WaterBlue = 0x00aaff;
+        public static uint Pink = 0xFF00AA;
+        public static uint LimeGreen = 0xAAFF00;
     }
 }
