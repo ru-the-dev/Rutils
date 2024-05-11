@@ -10,6 +10,9 @@ public static class DateTimeExtentions
                 ThrowIfIntOverflow(value);
                 dateTime = dateTime.AddYears((int)value);
             break;
+            case TimeUnit.Quarters:
+                dateTime = dateTime.AddDays(value * 91.25d);
+            break;
             case TimeUnit.Months:
                 ThrowIfIntOverflow(value);
                 dateTime = dateTime.AddMonths((int)value);

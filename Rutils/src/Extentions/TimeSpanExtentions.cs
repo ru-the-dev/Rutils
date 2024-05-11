@@ -2,58 +2,64 @@ namespace Rutils;
 
 public static class TimeSpanExtentions
 {
-    public static TimeUnitCount ToDisplayUnit(this TimeSpan timeSpan)
+    public static TimeUnitCount ToDisplayUnit(this TimeSpan timeSpan, TimeUnit[] excludedUnits)
     {
         TimeUnitCount years = timeSpan.ToTimeUnit(TimeUnit.Years);
-        if (years.count >= 1f)
+        if (years.Count >= 1f && excludedUnits.Contains(years.Unit) == false)
         {
             return years;
         }
 
+        TimeUnitCount quarters = timeSpan.ToTimeUnit(TimeUnit.Quarters);
+        if (quarters.Count >= 1f && excludedUnits.Contains(quarters.Unit) == false)
+        {
+            return quarters;
+        }
+
         TimeUnitCount months = timeSpan.ToTimeUnit(TimeUnit.Months);
-        if (months.count >= 1f)
+        if (months.Count >= 1f && excludedUnits.Contains(months.Unit) == false)
         {
             return months;
         }
 
         TimeUnitCount days = timeSpan.ToTimeUnit(TimeUnit.Days);
-        if (days.count >= 1f)
+        if (days.Count >= 1f && excludedUnits.Contains(days.Unit) == false)
         {
             return days;
         }
 
         TimeUnitCount hours = timeSpan.ToTimeUnit(TimeUnit.Hours);
-        if (hours.count >= 1f)
+        if (hours.Count >= 1f && excludedUnits.Contains(hours.Unit) == false)
         {
             return hours;
         }
 
         TimeUnitCount minutes = timeSpan.ToTimeUnit(TimeUnit.Minutes);
-        if (minutes.count >= 1f)
+        if (minutes.Count >= 1f && excludedUnits.Contains(minutes.Unit) == false)
         {
             return minutes;
         }
 
         TimeUnitCount seconds = timeSpan.ToTimeUnit(TimeUnit.Seconds);
-        if (seconds.count >= 1f)
+        if (seconds.Count >= 1f && excludedUnits.Contains(seconds.Unit) == false)
         {
             return seconds;
         }
 
         TimeUnitCount milliseconds = timeSpan.ToTimeUnit(TimeUnit.Milliseconds);
-        if (milliseconds.count >= 1f)
+        if (milliseconds.Count >= 1f && excludedUnits.Contains(milliseconds.Unit) == false)
         {
             return milliseconds;
         }
 
         TimeUnitCount nanoseconds = timeSpan.ToTimeUnit(TimeUnit.Nanoseconds);
-        if (nanoseconds.count >= 1f)
+        if (nanoseconds.Count >= 1f && excludedUnits.Contains(nanoseconds.Unit) == false)
         {
             return nanoseconds;
         }
 
         TimeUnitCount microseconds = timeSpan.ToTimeUnit(TimeUnit.Microseconds);
-        if (microseconds.count >= 1f)
+        if (microseconds.Count >= 1f && excludedUnits.Contains(microseconds.Unit) == false)
         {
             return microseconds;
         }
@@ -67,45 +73,49 @@ public static class TimeSpanExtentions
         switch(unit)
         {
             case TimeUnit.Years:
-                rv.unit = TimeUnit.Years;
-                rv.count = timeSpan.TotalDays / 365;
+                rv.Unit = TimeUnit.Years;
+                rv.Count = timeSpan.TotalDays / 365;
+            break;
+            case TimeUnit.Quarters:
+                rv.Unit = TimeUnit.Quarters;
+                rv.Count = timeSpan.TotalDays / 91;
             break;
             case TimeUnit.Months:
-                rv.unit = TimeUnit.Months;
-                rv.count = timeSpan.TotalDays / 30.437;
+                rv.Unit = TimeUnit.Months;
+                rv.Count = timeSpan.TotalDays / 30.437;
             break;
             case TimeUnit.Weeks:
-                rv.unit = TimeUnit.Weeks;
-                rv.count = timeSpan.TotalDays / 7;
+                rv.Unit = TimeUnit.Weeks;
+                rv.Count = timeSpan.TotalDays / 7;
             break;
             case TimeUnit.Days:
-                rv.unit = TimeUnit.Days;
-                rv.count = timeSpan.TotalDays;
+                rv.Unit = TimeUnit.Days;
+                rv.Count = timeSpan.TotalDays;
             break;
             case TimeUnit.Hours:
-                rv.unit = TimeUnit.Hours;
-                rv.count = timeSpan.TotalHours;
+                rv.Unit = TimeUnit.Hours;
+                rv.Count = timeSpan.TotalHours;
             break;
             case TimeUnit.Minutes:
-                rv.unit = TimeUnit.Minutes;
-                rv.count = timeSpan.TotalMinutes;
+                rv.Unit = TimeUnit.Minutes;
+                rv.Count = timeSpan.TotalMinutes;
             break;
             default: //intentional fall-through
             case TimeUnit.Seconds:
-                rv.unit = TimeUnit.Seconds;
-                rv.count = timeSpan.TotalSeconds;
+                rv.Unit = TimeUnit.Seconds;
+                rv.Count = timeSpan.TotalSeconds;
             break;
             case TimeUnit.Milliseconds:
-                rv.unit = TimeUnit.Milliseconds;
-                rv.count = timeSpan.TotalMilliseconds;
+                rv.Unit = TimeUnit.Milliseconds;
+                rv.Count = timeSpan.TotalMilliseconds;
             break;
             case TimeUnit.Microseconds:
-                rv.unit = TimeUnit.Microseconds;
-                rv.count = timeSpan.TotalMicroseconds;
+                rv.Unit = TimeUnit.Microseconds;
+                rv.Count = timeSpan.TotalMicroseconds;
             break;
             case TimeUnit.Nanoseconds:
-                rv.unit = TimeUnit.Nanoseconds;
-                rv.count = timeSpan.TotalNanoseconds;
+                rv.Unit = TimeUnit.Nanoseconds;
+                rv.Count = timeSpan.TotalNanoseconds;
             break;
         }
 

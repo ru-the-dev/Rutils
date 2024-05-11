@@ -3,6 +3,7 @@ namespace Rutils;
 public enum TimeUnit
 {
     Years,
+    Quarters,
     Months, 
     Weeks, 
     Days,
@@ -16,17 +17,19 @@ public enum TimeUnit
 
 public struct TimeUnitCount
 {
-    public TimeUnit unit;
-    public double count;
+    public TimeUnit Unit;
+    public double Count;
 
     public override string ToString()
     {
-        return $"{Math.Abs(count)} {ToString(unit)}";
+        int countInt = (int)Count;
+        return $"{countInt} {ToString(Unit, Math.Abs(countInt) > 1)}";
     }  
 
-    public static string ToString(TimeUnit unit)
+    public static string ToString(TimeUnit unit, bool plural = true)
     {
-        return Enum.GetName(unit)!.ToLower();
+        string enumValue = Enum.GetName(unit)!.ToLower();
+        return plural ? enumValue : enumValue.Substring(0, enumValue.Length - 1);
     }
 
 }
