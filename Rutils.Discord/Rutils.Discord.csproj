@@ -16,14 +16,19 @@
     <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
+  <!-- Depends on regular Rutils.-->
+  <ItemGroup Condition="Exists('..\Rutils\Rutils.csproj')">
+    <ProjectReference Include="..\Rutils\Rutils.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="!Exists('..\Rutils\Rutils.csproj')">
+    <PackageReference Include="Rutils" Version="*" />
+  </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Rutils" Version="*" />
     <PackageReference Include="Discord.Net" Version="*" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
   </ItemGroup>
 
-  <!-- Depends on regular Rutils.-->
-  <ItemGroup>
-    <ProjectReference Include="..\Rutils\Rutils.csproj" />
-  </ItemGroup>
+  
 </Project>
