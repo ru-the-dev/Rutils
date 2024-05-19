@@ -20,6 +20,13 @@ public struct TimeUnitCount
     public TimeUnit Unit;
     public double Count;
 
+    public TimeUnitCount() {}
+    public TimeUnitCount(int count, TimeUnit unit)
+    {
+        Count = count;
+        Unit = unit;
+    }
+
     public override string ToString()
     {
         int countInt = (int)Count;

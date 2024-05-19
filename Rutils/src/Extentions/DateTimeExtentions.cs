@@ -47,6 +47,30 @@ public static class DateTimeExtentions
         return dateTime;
     }
 
+    public static DateTime EstToLocal(this DateTime estDateTime)
+    {
+        TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+        return TimeToLocal(estDateTime, easternZone);
+    }
+
+    
+    public static DateTime TimeToLocal(this DateTime dateTime, TimeZoneInfo sourceTimeZone)
+    {
+        return TimeZoneInfo.ConvertTime(dateTime, sourceTimeZone, TimeZoneInfo.Local);
+    }
+
+    public static DateTime UtcToEst(this DateTime utc)
+    {
+        TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+        
+        return TimeZoneInfo.ConvertTimeFromUtc(utc, easternZone);
+    }
+
+    public static DateTime EstToUtc(this DateTime dateTime)
+    {
+        TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+        return TimeZoneInfo.ConvertTimeToUtc(dateTime, easternZone);
+    }
 
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     private static void ThrowIfIntOverflow(double value)
