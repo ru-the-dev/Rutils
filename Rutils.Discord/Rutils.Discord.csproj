@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Rutils.Discord</PackageId>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
     <Authors>Ruben Versavel</Authors>
 
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -16,17 +16,10 @@
     <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
-  <!-- Depends on regular Rutils.-->
-  <ItemGroup Condition="Exists('..\Rutils\Rutils.csproj')">
-    <ProjectReference Include="..\Rutils\Rutils.csproj" />
-  </ItemGroup>
-  <ItemGroup Condition="!Exists('..\Rutils\Rutils.csproj')">
-    <PackageReference Include="Rutils" Version="*" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="*" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Rutils" Version="*" />
   </ItemGroup>
 
   
