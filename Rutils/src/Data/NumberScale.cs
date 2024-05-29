@@ -25,7 +25,7 @@ public static class NumberScaleExtensions
             case NumberScale.Billions:
                 return 1d / 1_000_000_000d;
             case NumberScale.Trillions:
-                return 1d / 1_000_000_000d;
+                return 1d / 1_000_000_000_000d;
             default:
                 throw new NotImplementedException();
         }

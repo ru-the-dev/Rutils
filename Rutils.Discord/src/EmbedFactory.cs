@@ -9,7 +9,7 @@ public static class EmbedFactory
     public static bool HasDefaultTimestamp {get; set; } = true;
     public static bool HasDefaultFooter {get; set; } = true;
 
-    public static EmbedBuilder CreateBuilder(DiscordSocketClient? client)
+    public static EmbedBuilder CreateBuilder(DiscordSocketClient? client = null)
     {
         EmbedBuilder embed = new EmbedBuilder();
 
@@ -17,7 +17,7 @@ public static class EmbedFactory
 
         if (HasDefaultTimestamp)
         {
-             embed.WithCurrentTimestamp();
+            embed.WithCurrentTimestamp();
         }
 
         if (client != null && HasDefaultFooter)

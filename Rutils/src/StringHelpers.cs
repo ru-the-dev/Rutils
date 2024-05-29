@@ -14,6 +14,50 @@ public static class StringHelpers
         return $"{(currencyAmount < 0f ? "-" : "")}{(prefix != null ? prefix : "")}{currencyAmountString}{(postfix != null ? postfix : "")}";
     }
 
+
+    /// <summary>
+    /// Splits a string into chunks that do not exceed the max length provided
+    /// </summary>
+    public static string SplitStringInChunks(string src, int maxLength, string splitDelimiter = " ", string joinDelimiter = "\n")
+    {
+        List<string> chunks = new List<string>();
+
+        string chunk = "";
+
+        //split the string
+        string[] splitString = src.Split(splitDelimiter);
+
+
+        for (int i = 0; i < splitString.Length; ++i)
+        {
+            ref string currentString = ref splitString[i]; 
+
+            if (chunk.Length == 0)
+            {
+                chunk += currentString;
+            }
+            else if (chunk.Length + currentString.Length <= maxLength)
+            {
+                chunk += splitDelimiter + currentString;
+            }
+            else
+            {
+                //chunk will exceed the maxLength
+                chunks.Add(chunk);
+                chunk = currentString;
+            }
+        }
+        
+        //add last chunk if we have to
+        if (chunk.Length != 0)
+        {
+            chunks.Add(chunk);
+        }
+
+        //return joined result
+        return string.Join(joinDelimiter, chunks);
+    }
+
     public static string CreateTable<T>
     (
         IEnumerable<T> entries,
