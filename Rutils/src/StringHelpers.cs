@@ -4,13 +4,23 @@ namespace Rutils;
 
 public static class StringHelpers
 {
-    public static string FloatToCurrencyString(float currencyAmount, string? prefix = "$", string? postfix = null, string specificCulture = "en-US")
+    public static string CurrencyString(int currencyAmount, string? prefix = "$", string? postfix = null, string specificCulture = "en-US")
+    {
+        return CurrencyString((double)currencyAmount, prefix, postfix, specificCulture);
+    }
+
+    public static string CurrencyString(float currencyAmount, string? prefix = "$", string? postfix = null, string specificCulture = "en-US")
+    {
+        return CurrencyString((double)currencyAmount, prefix, postfix, specificCulture);
+    }
+
+    public static string CurrencyString(double currencyAmount, string? prefix = "$", string? postfix = null, string specificCulture = "en-US")
     {
         bool hasDecimals = Math.Abs(currencyAmount % 1) > (Double.Epsilon * 100);
 
         var culture = CultureInfo.GetCultureInfo("en-US");
 
-        string currencyAmountString = hasDecimals ? float.Abs(currencyAmount).ToString("#,0.00", culture) : int.Abs((int)currencyAmount).ToString("#,0", culture);
+        string currencyAmountString = hasDecimals ? Math.Abs(currencyAmount).ToString("#,0.00", culture) : int.Abs((int)currencyAmount).ToString("#,0", culture);
         return $"{(currencyAmount < 0f ? "-" : "")}{(prefix != null ? prefix : "")}{currencyAmountString}{(postfix != null ? postfix : "")}";
     }
 
