@@ -19,8 +19,13 @@
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="*" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-    <PackageReference Include="Rutils" Version="*" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rutils\Rutils.csproj" />
+  </ItemGroup>
+
+
 
   
 </Project>
