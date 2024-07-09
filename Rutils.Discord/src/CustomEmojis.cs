@@ -9,6 +9,7 @@ public static class CustomEmojis
     public static string GreenCheck = "✅";
     public static string Info = "ℹ️";
     public static string Warning = "⚠️";
+    public static string RobotFace = "🤖";
     
 
     //Server1 = https://discord.gg/AZmkqhXJ6K

@@ -11,7 +11,7 @@ public static class DateTimeExtentions
                 dateTime = dateTime.AddYears((int)value);
             break;
             case TimeUnit.Quarters:
-                dateTime = dateTime.AddDays(value * 91.25d);
+                dateTime = dateTime.AddMonths((int)(value * 3));
             break;
             case TimeUnit.Months:
                 ThrowIfIntOverflow(value);
@@ -40,11 +40,16 @@ public static class DateTimeExtentions
                 dateTime = dateTime.AddMicroseconds(value);
             break;
             case TimeUnit.Nanoseconds:
-                dateTime = dateTime.AddMicroseconds(value / 1_000);
+                dateTime = dateTime.AddMicroseconds(value / 1_000d);
             break;
         }
 
         return dateTime;
+    }
+
+    public static int GetQuarter(this DateTime dateTime)
+    {
+        return (int)((dateTime.Month + 2d) / 3d);
     }
 
     public static DateTime EstToLocal(this DateTime estDateTime)
