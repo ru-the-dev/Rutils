@@ -2,6 +2,9 @@ namespace Rutils;
 
 public static class DateTimeExtentions
 {
+    public static DateTime EstNow { get => DateTime.UtcNow.UtcToEst(); }
+    public static DateTime EstToday { get => DateTime.UtcNow.UtcToEst().Date; }
+
     public static DateTime AddByUnit(this DateTime dateTime, TimeUnit unit, double value)
     {
         switch(unit)
