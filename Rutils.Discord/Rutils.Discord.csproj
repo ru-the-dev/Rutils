@@ -18,7 +18,9 @@
 
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="*" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="*" />
   </ItemGroup>
 
   <ItemGroup>
