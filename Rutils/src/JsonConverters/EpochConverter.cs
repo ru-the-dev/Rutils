@@ -19,6 +19,11 @@ public class NanosecondEpochConverter : EpochConverter
     public NanosecondEpochConverter() : base(TimeUnit.Nanoseconds) {}
 }
 
+public class SecondEpochConverter : EpochConverter
+{
+    public SecondEpochConverter() : base(TimeUnit.Seconds) {}
+}
+
 public abstract class EpochConverter : DateTimeConverterBase
 {
     private static readonly DateTime _epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
