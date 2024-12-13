@@ -80,6 +80,16 @@ public static class DateTimeExtentions
         return TimeZoneInfo.ConvertTimeToUtc(dateTime, easternZone);
     }
 
+    public static long ToUnixTimeSeconds(this DateTime dateTime)
+    {
+        return new DateTimeOffset(dateTime).ToUnixTimeSeconds();
+    }
+
+    public static long ToUnixTimeMilliseconds(this DateTime dateTime)
+    {
+        return new DateTimeOffset(dateTime).ToUnixTimeMilliseconds();
+    }
+
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     private static void ThrowIfIntOverflow(double value)
     {

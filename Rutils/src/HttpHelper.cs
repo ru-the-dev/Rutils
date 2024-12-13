@@ -1,5 +1,6 @@
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Rutils;
 
@@ -15,7 +16,7 @@ public static class HttpHelper
     /// </summary>
     /// <exception cref="HttpRequestException">Thrown when request fails</exception>
     /// <exception cref="JsonSerializationException">Thrown when json deserialization fails</exception>
-    public static async Task<T> HandleRequestAsync<T>(HttpClient client, HttpRequestMessage req)
+    public static async Task<T> HandleRequestAsync<T>(HttpClient client, HttpRequestMessage req, string? jsonPath = null)
     {
         var result = await client.SendAsync(req);
 
@@ -26,7 +27,16 @@ public static class HttpHelper
 
         var strContent = await result.Content.ReadAsStringAsync();
         
-        T? returnValue = JsonConvert.DeserializeObject<T>(strContent);
+        var jsonObject = JObject.Parse(strContent);
+
+        JToken? targetToken = jsonPath == null ? jsonObject.Root : jsonObject.SelectToken(jsonPath);
+
+        if (targetToken == null)
+        {
+            throw new JsonException($"Could not find a JToken at path: \"{jsonPath}\"");
+        }
+        
+        T? returnValue = targetToken.ToObject<T>();
 
         if (returnValue == null)
         {
