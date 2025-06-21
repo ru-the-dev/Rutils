@@ -1,84 +1,70 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Rutils;
 
+public abstract class EpochConverter : JsonConverter<DateTime>
+{
+    private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+    public TimeUnit TimeUnit { get; }
+    public double MillisecondMultiplier { get; }
+
+    protected EpochConverter(TimeUnit timeUnit)
+    {
+        TimeUnit = timeUnit;
+        MillisecondMultiplier = timeUnit switch
+        {
+            TimeUnit.Years => 31_450_000_000,
+            TimeUnit.Months => 2_628_000_000,
+            TimeUnit.Weeks => 604_800_000,
+            TimeUnit.Days => 86_400_000,
+            TimeUnit.Hours => 3_600_000,
+            TimeUnit.Minutes => 60_000,
+            TimeUnit.Seconds => 1000,
+            TimeUnit.Milliseconds => 1,
+            TimeUnit.Microseconds => 1d / 1_000,
+            TimeUnit.Nanoseconds => 1d / 1_000_000,
+            _ => throw new ArgumentOutOfRangeException(nameof(timeUnit), "Unsupported TimeUnit")
+        };
+    }
+
+    public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        double value = reader.GetDouble();
+        // Convert to milliseconds for DateTimeOffset.FromUnixTimeMilliseconds
+        long epochMilliseconds = (long)(value * MillisecondMultiplier);
+        return DateTimeOffset.FromUnixTimeMilliseconds(epochMilliseconds).UtcDateTime;
+    }
+
+    public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+    {
+        var elapsedMilliseconds = (value.ToUniversalTime() - Epoch).TotalMilliseconds;
+        // Scale by inverse multiplier to get the original unit value:
+        double convertedValue = elapsedMilliseconds / MillisecondMultiplier;
+
+        // Write as raw double value
+        writer.WriteNumberValue(convertedValue);
+    }
+}
 
 public class MicrosecondEpochConverter : EpochConverter
 {
-    public MicrosecondEpochConverter() : base(TimeUnit.Microseconds) {}
+    public MicrosecondEpochConverter() : base(TimeUnit.Microseconds) { }
 }
 
 public class MillisecondEpochConverter : EpochConverter
 {
-    public MillisecondEpochConverter() : base(TimeUnit.Milliseconds) {}
+    public MillisecondEpochConverter() : base(TimeUnit.Milliseconds) { }
 }
 
 public class NanosecondEpochConverter : EpochConverter
 {
-    public NanosecondEpochConverter() : base(TimeUnit.Nanoseconds) {}
+    public NanosecondEpochConverter() : base(TimeUnit.Nanoseconds) { }
 }
 
 public class SecondEpochConverter : EpochConverter
 {
-    public SecondEpochConverter() : base(TimeUnit.Seconds) {}
-}
-
-public abstract class EpochConverter : DateTimeConverterBase
-{
-    private static readonly DateTime _epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
-    public TimeUnit TimeUnit { get; }
-
-    public double MillisecondMultiplier { get; }
-
-    public EpochConverter(TimeUnit timeUnit)
-    {
-        TimeUnit = timeUnit;
-
-        switch (TimeUnit)
-        {
-            case TimeUnit.Years:
-                MillisecondMultiplier = 31_450_000_000;
-            break;
-            case TimeUnit.Months:
-                MillisecondMultiplier = 2_628_000_000;
-            break;
-            case TimeUnit.Weeks:
-                MillisecondMultiplier = 604_800_000;
-            break;
-            case TimeUnit.Days:
-                MillisecondMultiplier = 86_400_000;
-            break;
-            case TimeUnit.Hours:
-                MillisecondMultiplier = 3_600_000;
-            break;
-            case TimeUnit.Minutes:
-                MillisecondMultiplier = 60_000;
-            break;
-            case TimeUnit.Seconds:
-                MillisecondMultiplier = 1000;
-            break;
-            case TimeUnit.Milliseconds:
-                MillisecondMultiplier = 1;
-            break;
-            case TimeUnit.Microseconds:
-                MillisecondMultiplier = 1d / 1_000;
-            break;
-            case TimeUnit.Nanoseconds:
-                MillisecondMultiplier = 1d / 1_000_000;
-            break;
-        }
-    }
-
-    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
-    {
-        writer.WriteRawValue(((DateTime)value! - _epoch).TotalMilliseconds + new string('0', (int)Math.Log10(MillisecondMultiplier)));
-    }
-
-    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
-    {
-        long epochMilliseconds = (long)(Convert.ToDouble(reader.Value!) * MillisecondMultiplier);
-        return DateTimeOffset.FromUnixTimeMilliseconds(epochMilliseconds).DateTime;
-    }
+    public SecondEpochConverter() : base(TimeUnit.Seconds) { }
 }

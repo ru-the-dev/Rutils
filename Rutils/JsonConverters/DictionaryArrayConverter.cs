@@ -1,33 +1,40 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
-public class DictionaryArrayConverter<KeyType, ValueType> : JsonConverter<Dictionary<KeyType, ValueType>> where KeyType: notnull
+public class DictionaryArrayConverter<KeyType, ValueType> : JsonConverter<Dictionary<KeyType, ValueType>> where KeyType : notnull
 {
-    public override Dictionary<KeyType, ValueType> ReadJson(JsonReader reader, Type objectType, Dictionary<KeyType, ValueType>? existingValue, bool hasExistingValue, JsonSerializer serializer)
+    public override Dictionary<KeyType, ValueType> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        JArray array = JArray.Load(reader);
-        
+        if (reader.TokenType != JsonTokenType.StartArray)
+        {
+            throw new JsonException("Expected start of array.");
+        }
+
         var combinedDictionary = new Dictionary<KeyType, ValueType>();
 
-        foreach (var item in array)
+        while (reader.Read())
         {
-            var dictionary = item.ToObject<Dictionary<KeyType, ValueType>>();
+            if (reader.TokenType == JsonTokenType.EndArray)
+                return combinedDictionary;
 
-            if (dictionary == null)
-            {
-                continue;
-            }
+            // Deserialize each element as Dictionary<KeyType, ValueType>
+            var dict = JsonSerializer.Deserialize<Dictionary<KeyType, ValueType>>(ref reader, options);
 
-            foreach (var kvp in dictionary)
+            if (dict != null)
             {
-                combinedDictionary[kvp.Key] = kvp.Value;
+                foreach (var kvp in dict)
+                {
+                    combinedDictionary[kvp.Key] = kvp.Value;
+                }
             }
         }
 
-        return combinedDictionary;
+        throw new JsonException("Unexpected end of JSON array.");
     }
 
-    public override void WriteJson(JsonWriter writer, Dictionary<KeyType, ValueType>? value, JsonSerializer serializer)
+    public override void Write(Utf8JsonWriter writer, Dictionary<KeyType, ValueType> value, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
     }

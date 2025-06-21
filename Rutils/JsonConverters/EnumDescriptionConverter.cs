@@ -1,46 +1,46 @@
-using Newtonsoft.Json;
-
 namespace Rutils;
 
-public class EnumDescriptionConverter<T> : JsonConverter<T> where T : Enum
+using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+public class EnumDescriptionConverter<T> : JsonConverter<T> where T : struct, Enum
 {
-    public override T ReadJson(JsonReader reader, Type objectType, T? existingValue, bool hasExistingValue, JsonSerializer serializer)
-    {   
+    public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        bool isNullable = Nullable.GetUnderlyingType(typeToConvert) != null;
+        Type enumType = Nullable.GetUnderlyingType(typeToConvert) ?? typeToConvert;
 
-        Type? type = Nullable.GetUnderlyingType(objectType);
-        
-        bool nullable = true;
-        if (type == null)
+        if (reader.TokenType != JsonTokenType.String)
         {
-            type = objectType;
-            nullable = false;
+            throw new JsonException($"Unexpected token parsing enum. Expected String, got {reader.TokenType}.");
         }
 
-        string value = existingValue!.ToString();
-        object? res;
-        if (Enum.TryParse(type, value, true, out res))
+        string value = reader.GetString()!;
+
+        // Try parse enum by name, case-insensitive
+        if (Enum.TryParse(enumType, value, ignoreCase: true, out object? result))
         {
-            return (T)res;
+            return (T)result;
         }
-        
-        if (nullable)
+
+        // Fallback: try parse by description attribute using your custom method
+        try
         {
-            try
-            {
-                return Rutils.EnumExtentions.FromDescription<T>(value);
-            }
-            catch
+            var enumValue = Rutils.EnumExtentions.FromDescription<T>(value);
+            return enumValue;
+        }
+        catch
+        {
+            if (isNullable)
             {
                 return default!;
             }
-        }
-        else
-        {
-            return Rutils.EnumExtentions.FromDescription<T>(value);
+            throw new JsonException($"Unable to convert \"{value}\" to enum {enumType.Name}.");
         }
     }
 
-    public override void WriteJson(JsonWriter writer, T? value, JsonSerializer serializer)
+    public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
     }
