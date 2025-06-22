@@ -1,7 +1,8 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace Rutils;
+namespace Rutils.Extentions;
+
 
 public static class EnumExtentions
 {

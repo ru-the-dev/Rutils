@@ -1,4 +1,7 @@
-namespace Rutils;
+using Rutils.Data;
+
+namespace Rutils.Extentions;
+
 
 public static class TimeSpanExtentions
 {

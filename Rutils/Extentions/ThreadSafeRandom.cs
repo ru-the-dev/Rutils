@@ -1,4 +1,5 @@
-namespace Rutils;
+namespace Rutils.Extentions;
+
 
 public static class ThreadSafeRandom
 {

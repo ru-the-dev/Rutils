@@ -1,4 +1,4 @@
-namespace Rutils;
+namespace Rutils.Data;
 
 public enum NumberScale
 {

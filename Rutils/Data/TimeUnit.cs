@@ -1,6 +1,5 @@
-using Newtonsoft.Json;
+namespace Rutils.Data;
 
-namespace Rutils;
 
 public enum TimeUnit
 {
@@ -19,10 +18,8 @@ public enum TimeUnit
 
 public struct TimeUnitCount
 {
-    [JsonProperty("timeUnit")]
     public TimeUnit Unit { get; set; }
     
-    [JsonProperty("unitCount")]
     public double Count { get; set; }
 
     public TimeUnitCount() {}

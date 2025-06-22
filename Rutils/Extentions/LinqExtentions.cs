@@ -1,4 +1,4 @@
-namespace Rutils;
+namespace Rutils.Extentions;
 
 
 public static class LinqExtentions
@@ -25,7 +25,7 @@ public static class LinqExtentions
 
     public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
     {
-        return source.OrderBy(x => Rutils.ThreadSafeRandom.Random.Next());
+        return source.OrderBy(x => ThreadSafeRandom.Random.Next());
     }
 
     public static IEnumerable<IEnumerable<T>> ChunkBy<T>(this IEnumerable<T> source, int chunkSize) 

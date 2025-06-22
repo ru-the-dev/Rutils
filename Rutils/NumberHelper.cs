@@ -1,3 +1,5 @@
+using Rutils.Data;
+
 namespace Rutils;
 
 public static class NumberUtils
