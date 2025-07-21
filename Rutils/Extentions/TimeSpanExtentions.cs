@@ -5,9 +5,11 @@ namespace Rutils.Extentions;
 
 public static class TimeSpanExtentions
 {
-    public static TimeUnitCount ToDisplayUnit(this TimeSpan timeSpan, TimeUnit[] excludedUnits)
+    public static TimeUnitCount ToDisplayUnit(this TimeSpan timeSpan, TimeUnit[]? excludedUnits = null)
     {
         TimeUnitCount years = timeSpan.ToTimeUnit(TimeUnit.Years);
+        excludedUnits ??= []; // default to empty array if none was provided
+
         if (years.Count >= 1f && excludedUnits.Contains(years.Unit) == false)
         {
             return years;
