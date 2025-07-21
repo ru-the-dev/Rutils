@@ -12,10 +12,14 @@ public static class StringExtentions
         return new string(a);
     }
 
-    public static string Truncate(this string s, int maxLength, string truncationString = "..." )
+    public static string Truncate(this string s, int maxLength, string truncationString = "...")
     {
         maxLength = Math.Clamp(maxLength - truncationString.Length, 0, s.Length);
 
-        return s.Substring(0, maxLength) + truncationString; 
+        return s.Substring(0, maxLength) + truncationString;
     }
+
+
+    public static int GetWordCount(this string source) => StringHelpers.GetWordCount(source);
+    public static TimeSpan GetEstimatedReadTime(this string source, float readingSpeedWordsPerMinute = StringHelpers.AverageReadingSpeedWordsPerMinute) => StringHelpers.GetEstimatedReadTime(source, readingSpeedWordsPerMinute);
 }
