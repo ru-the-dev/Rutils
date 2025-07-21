@@ -4,6 +4,8 @@ namespace Rutils;
 
 public static class StringHelpers
 {
+    public const float AverageReadingSpeedWordsPerMinute = 238;
+
     public static string CurrencyString(int currencyAmount, string? prefix = "$", string? postfix = null, string specificCulture = "en-US")
     {
         return CurrencyString((double)currencyAmount, prefix, postfix, specificCulture);
@@ -40,7 +42,7 @@ public static class StringHelpers
 
         for (int i = 0; i < splitString.Length; ++i)
         {
-            ref string currentString = ref splitString[i]; 
+            ref string currentString = ref splitString[i];
 
             if (chunk.Length == 0)
             {
@@ -57,7 +59,7 @@ public static class StringHelpers
                 chunk = currentString;
             }
         }
-        
+
         //add last chunk if we have to
         if (chunk.Length != 0)
         {
@@ -71,15 +73,15 @@ public static class StringHelpers
     public static string CreateTable<T>
     (
         IEnumerable<T> entries,
-        IEnumerable<(string columnTitle, Func<T,string> selectorFunction)> columns,
+        IEnumerable<(string columnTitle, Func<T, string> selectorFunction)> columns,
         char verticalSeperator = '|',
         char horizontalSeperator = '-',
         char spacingChar = ' '
     )
-    {          
+    {
         //initialize column lists  (2d array x = column, y = data entry)
-        string[,] tableData = new string[ columns.Count(), entries.Count() ];
-        
+        string[,] tableData = new string[columns.Count(), entries.Count()];
+
         //populate column list with data
         for (int y = 0; y < entries.Count(); ++y)
         {
@@ -101,7 +103,7 @@ public static class StringHelpers
         for (int x = 0; x < tableData.GetLength(0); ++x)
         {
             int highestLength = columns.ElementAt(x).columnTitle.Length;
-            
+
             for (int y = 0; y < tableData.GetLength(1); ++y)
             {
                 if (tableData[x, y].Length > highestLength)
@@ -128,15 +130,46 @@ public static class StringHelpers
 
             for (int x = 0; x < tableData.GetLength(0); ++x)
             {
-                rowStrings[x] = tableData[x,y].PadRight(columnSizes[x], spacingChar);
+                rowStrings[x] = tableData[x, y].PadRight(columnSizes[x], spacingChar);
             }
 
             //append row data
             tableString += $"{verticalSeperator}{spacingChar}{string.Join($"{spacingChar}{verticalSeperator}{spacingChar}", rowStrings)}{spacingChar}{verticalSeperator}\n";
             tableString += horizontalLine;
         }
-        
+
         //we have a finished string table
         return tableString;
     }
+
+    public static int GetWordCount(string source)
+    {
+        if (string.IsNullOrWhiteSpace(source))
+            return 0;
+
+        int count = 0;
+        bool inWord = false;
+
+        foreach (char c in source)
+        {
+            if (char.IsWhiteSpace(c))
+            {
+                inWord = false;
+            }
+            else if (!inWord)
+            {
+                count++;
+                inWord = true;
+            }
+        }
+
+        return count;
+    }
+
+
+    public static TimeSpan GetEstimatedReadTime(string src, float readingSpeedWordsPerMinute = AverageReadingSpeedWordsPerMinute)
+    {
+        return TimeSpan.FromSeconds(Math.Round(GetWordCount(src) / readingSpeedWordsPerMinute * 60f));
+    }
+    
 }
